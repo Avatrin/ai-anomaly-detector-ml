@@ -34,7 +34,7 @@ def model():
   model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="mse")
   return(model)
 
-def train_model(training_set,model,model_path):
+def save_and_train_model(training_set,model,model_path):
   model_checkpoint_callback = keras.callbacks.ModelCheckpoint(
     filepath=model_path+'/checkpoints',
     monitor='val_loss',
@@ -52,3 +52,10 @@ def train_model(training_set,model,model_path):
     ],
   )
   model.save(model_path)
+
+def test_model(number_subsets):
+  for k in range(number_subsets):
+    input = anomaly[100*k:100*k +100].values.reshape(100,1)
+    prediction = model.predict(input)
+    train_mae_loss = np.mean(np.abs(prediction[:,-1] - input), axis=0)
+    print(train_mae_loss)

@@ -34,9 +34,9 @@ def model():
   model.compile(optimizer=keras.optimizers.Adam(learning_rate=0.001), loss="mse")
   return(model)
 
-def train_model(training_set,model,checkpoint_path):
+def train_model(training_set,model,model_path):
   model_checkpoint_callback = keras.callbacks.ModelCheckpoint(
-    filepath=checkpoint_path,
+    filepath=model_path+'/checkpoints',
     monitor='val_loss',
     mode='min')
   
@@ -51,4 +51,4 @@ def train_model(training_set,model,checkpoint_path):
         model_checkpoint_callback
     ],
   )
-  return(model)
+  model.save(model_path)
